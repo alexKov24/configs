@@ -1,0 +1,6 @@
+super + r
+	$TERMINAL lftest
+super + alt + {m,n,v,p,t,f,w}
+	{megasync,wifi-dmenu,playvid,passmenu,trem-dmenuselect,firefox,nmtui}
+super + alt + { Up, Down }
+	brightness {+,-}
