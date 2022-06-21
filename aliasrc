@@ -1,0 +1,97 @@
+#!/bin/sh
+# Use neovim for vim if present.
+[ -x "$(command -v nvim)" ] && alias vim="nvim" vimdiff="nvim -d"
+
+# Transmission
+alias \
+	tl="transmission-remote -l" \
+#GAMES
+	alias cfgit='/usr/bin/git --git-dir=$HOME/.cfg/.git/ --work-tree=$HOME' \
+# Verbosity and settings that you pretty much just always are going to want.
+alias \
+	ll="ls -al" \
+	cb="cd .." \
+	cp="cp -iv" \
+	mv="mv -iv" \
+	rm="rm -vI" \
+	mkd="mkdir -pv" \
+	yt="youtube-dl --add-metadata -i" \
+	yta="yt -x -f bestaudio/best" \
+	ffmpeg="ffmpeg -hide_banner"
+
+# Colorize commands when possible.
+alias \
+	ls="ls -hN --color=auto --group-directories-first" \
+	grep="grep --color=auto" \
+	diff="diff --color=auto" \
+	ccat="highlight --out-format=ansi"
+
+# These common commands are just too long! Abbreviate them.
+alias \
+	ka="killall" \
+	g="git" \
+	trem="transmission-remote" \
+	YT="youtube-viewer" \
+	sdn="sudo shutdown -h now" \
+	f="$FILE" \
+	e="$EDITOR" \
+	v="$EDITOR" \
+	p="sudo pacman" \
+	xi="sudo xbps-install" \
+	xr="sudo xbps-remove -R" \
+	xq="xbps-query" \
+	z="zathura"\
+
+alias \
+	magit="nvim -c MagitOnly" \
+	ref="shortcuts >/dev/null; source ${XDG_CONFIG_HOME:-$HOME/.config}/shortcutrc ; source ${XDG_CONFIG_HOME:-$HOME/.config}/zshnameddirrc" \
+	weath="less -S ${XDG_DATA_HOME:-$HOME/.local/share}/weatherreport" \
+	tmux="tmux -f ${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.conf" \
+
+# System specific aliases
+alias \
+	lf="lftest"
+	lfd="lf Downloads/" \
+	psy="lf ~/data/text/psyc/" \
+	ani="ani-cli"\
+
+
+
+# Useful search commands
+
+	se() {
+		[ -z $1 ] && $(du -a $HOME/.local/bin/* | cut -f2- | fzf | xargs -r $EDITOR ;)
+		[ $1 = "c" ] && du -a $HOME/.config/* | cut -f2- | fzf | xargs -r $EDITOR ;
+		[ $1 = "l" ] && du -a $HOME/.local/* | cut -f2- | fzf | xargs -r $EDITOR ;
+		[ $1 = "h" ] && du -a $HOME/* | cut -f2- | fzf | xargs -r $EDITOR ;
+		[ $1 = "ed" ] && pwd | xargs -I {} du -a "{}" | cut -f2- | fzf | xargs -r $EDITOR ;
+		[ $1 = "steam" ] && du -a ~/.local/share/Steam/steamapps/common/* | cut -f2- | fzf | xargs -I {} lf "{}";
+		[ $1 = "help" ] && sed -n '/# Useful/,$p' $HOME/.config/shell/aliasrc ;
+	}
+
+# Generate temp man file for selected command
+	mansplain() {man -k . | dmenu -l 20 | cut -f2- | xargs man -Tpdf | zathura - ;}
+
+# Play selected movie from transcent-2t
+	movie() {
+		dir="~/../transcent-2t/Personal/Cinematography"
+		[ ! -d ~/../transcent-2t/Personal/Cinematography/ ] && {
+			echo "$dir not connected"
+			echo "would you like to connect?"
+			read ans
+			[ $ans != 'y' ] && exit 1
+			dmenumount
+		}
+		mpv "$(find ~/../transcent-2t/Personal/Cinematography/* -regex  '.*\.mkv\|.*\.mp4\|.*\.mov\|.*\.wmv\|.*\.avi\|.*\.webm' | fzf --delimiter / --with-nth -1;)"
+	}
+
+# Edit conf file from configlist
+
+
+	conf() { cat /home/alex/.local/bin/configlist | fzf | sed 's/^.* - //' | xargs -I {} $EDITOR $HOME"{}" ; }
+
+	ytconf() { [ -f "$1" ] && echo "$1 - $(printf '%q\n' "$(pwd)/$1")" >> $HOME/.local/bin/configlist }
+
+	ytgg() { [ -d "$1" ] && echo "$1 - $(printf '%q\n' "$(pwd)/$1")" >> $HOME/.local/bin/dirlist }
+
+	gg() { cat $HOME/.local/bin/dirlist | fzf | sed 's/^.* - //' | xargs -I {} lf "{}" ;}
