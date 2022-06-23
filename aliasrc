@@ -90,6 +90,8 @@ alias \
 
 	conf() { cat /home/alex/.local/bin/configlist | fzf | sed 's/^.* - //' | xargs -I {} $EDITOR $HOME"{}" ; }
 
+	lfconf() { cat /home/alex/.local/bin/configlist | fzf | sed 's/^.* - //' | xargs -I {} lf $HOME"{}" ; }
+
 	ytconf() { [ -f "$1" ] && echo "$1 - $(printf '%q\n' "$(pwd)/$1")" >> $HOME/.local/bin/configlist }
 
 	ytgg() { [ -d "$1" ] && echo "$1 - $(printf '%q\n' "$(pwd)/$1")" >> $HOME/.local/bin/dirlist }
