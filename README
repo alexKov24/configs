@@ -1,3 +1,4 @@
 system config files
 dwm ------------ config.h
 aliases -------- aliasrc
+sxhkd ---------- sxhkdrc
