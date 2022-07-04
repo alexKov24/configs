@@ -51,8 +51,6 @@ alias \
 # System specific aliases
 alias \
 	lf="lfub"
-	lfd="lf Downloads/" \
-	psy="lf ~/data/text/psyc/" \
 	ani="ani-cli"\
 
 
